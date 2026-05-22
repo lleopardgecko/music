@@ -1,0 +1,13 @@
+# library (audio, thumbnails, metadata)
+library/
+
+# player (separate repo)
+player/
+
+# obsidian
+.obsidian/
+
+# misc
+.DS_Store
+__pycache__/
+*.pyc

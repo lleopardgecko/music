@@ -1,0 +1,98 @@
+
+Project: Build a terminal-based music library manager that wraps yt-dlp and generates an Obsidian catalog. The whole thing lives in one directory that doubles as an Obsidian vault.
+Directory structure:
+music/                   # obsidian vault root
+  library/               # audio files (m4a, mp4), syncs to phone via iCloud
+  catalog/               # auto-generated markdown notes, one per file
+    music/
+    podcasts/
+  player/                # existing PWA source code, already here — don't touch
+  .obsidian/             # will be created by obsidian, ignore
+  .obsidianignore        # generate this: ignore player/, node_modules/, .git/
+Phase 1 — Audit the existing library:
+
+Scan all audio/video files currently in the repo. Inventory file types, sizes, and what metadata is already embedded (use mutagen or ffprobe).
+Classify each file as music or podcast. Use heuristics: filename patterns like "Ep." or episode numbers, duration (podcasts tend to be 20min+), channel name if available.
+Check which files have .info.json sidecars already.
+For files without .info.json: try to recover the original YouTube URL from embedded metadata (yt-dlp often writes purl, comment, or description tags). Build a list of recoverable URLs.
+For recoverable URLs, run yt-dlp --write-info-json --skip-download to fetch metadata without re-downloading audio.
+Print a full report: total files, classified breakdown, metadata coverage, any files that couldn't be identified. Wait for my approval before moving to phase 2.
+
+Phase 2 — Build the CLI tool:
+
+Create a Python script (call it dl) that takes one or more YouTube URLs as arguments.
+For each URL, the script should:
+
+Run yt-dlp to download audio (prefer m4a/mp4, keep current quality defaults).
+Save the audio file to library/ using yt-dlp's default naming.
+Save the .info.json sidecar alongside the audio file in library/.
+Parse the .info.json and generate a markdown note in catalog/music/ or catalog/podcasts/ (classify using the same heuristics from phase 1).
+
+
+The markdown note format:
+
+yaml---
+title:
+artist:
+type: music | podcast
+source_url:
+channel:
+upload_date:
+duration:
+tags: []
+file_path:        # relative path from vault root to audio file
+date_added:       # date of download
+---
+markdown## Description
+[truncated video description, max ~500 chars]
+
+## Notes
+[empty, for me to fill in later]
+
+For tags: pull from YouTube tags in the .info.json, but filter aggressively — keep only genuinely useful tags (genre names, artist names, meaningful descriptors). Drop garbage like "official video", "HD", "lyrics", hashtag spam. Cap at 8 tags per file. Lowercase, no spaces (use hyphens).
+The script should be idempotent — if a file already exists in library/, skip it. If a catalog note already exists, don't overwrite it (I may have added personal notes).
+Add a --dry-run flag that shows what would be downloaded and cataloged without doing it.
+Add a --recatalog flag that regenerates catalog notes from existing .info.json files without downloading anything (useful for bulk operations).
+Make the script installable as a shell alias. Print the alias command at the end of setup so I can add it to my shell config. Should work as dl [url] from anywhere.
+
+Phase 3 — Generate catalog for existing files:
+
+Run the --recatalog flow across every file in library/ that has an .info.json.
+For files without .info.json and no recoverable URL, generate a best-effort note using embedded metadata and filename parsing. Mark these with a incomplete_metadata: true frontmatter flag so I can find and fix them in Obsidian.
+Generate the .obsidianignore file.
+Print a final summary: total notes generated, full metadata vs. partial, music vs. podcast breakdown.
+
+Constraints:
+
+Python only. Keep it to one script file plus a small config if needed.
+Don't move, rename, or delete any existing audio files without asking.
+Don't touch anything in player/.
+The script should work on macOS.
+Keep yt-dlp as the sole download dependency — don't add alternatives.
+
+
+Existing yt-dlp commands to preserve:
+I have four download modes. The CLI tool should support all of them. Here are the exact commands I currently use — preserve the format selection, metadata embedding, and the thumbnail post-processor (it crops thumbnails to square with a blurred background, important for the player).
+bash# AUDIO (default mode)
+yt-dlp -f "bestaudio[ext=m4a]" --embed-metadata --embed-thumbnail \
+  -o "~/Desktop/music/%(title)s.%(ext)s" \
+  --ppa "ThumbnailsConvertor+ffmpeg_o:-vf split[a][b];[b]scale=ih:ih,boxblur=20:20[bg];[bg][a]overlay=(W-w)/2:(H-h)/2,crop=ih:ih" ""
+
+# AUDIO WITH COOKIES (for age-restricted / region-locked content)
+# same as above but adds --cookies-from-browser chrome
+
+# VIDEO
+yt-dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 \
+  --embed-metadata -o "%(title)s.%(ext)s" ""
+
+# PLAYLIST / ALBUM (numbered tracks in subfolder)
+yt-dlp -f "bestaudio[ext=m4a]" --embed-metadata --embed-thumbnail \
+  -o "~/Desktop/music/%(playlist_title)s/%(playlist_index)02d - %(title)s.%(ext)s" \
+  --ppa "ThumbnailsConvertor+ffmpeg_o:-vf split[a][b];[b]scale=ih:ih,boxblur=20:20[bg];[bg][a]overlay=(W-w)/2:(H-h)/2,crop=ih:ih" ""
+The CLI tool should expose these as modes, something like:
+bashdl <url>              # default: audio
+dl --cookies <url>    # audio with chrome cookies
+dl --video <url>      # video mode
+dl --album <url>      # playlist/album with numbered tracks in subfolder
+Update the output paths to point to library/ instead of ~/Desktop/music/. Add --write-info-json to all modes. Keep everything else identical — don't change format selection, the thumbnail post-processor, or metadata flags.
+For album mode: catalog notes should be generated per-track, but also create one parent note for the album folder that links to all its tracks.
