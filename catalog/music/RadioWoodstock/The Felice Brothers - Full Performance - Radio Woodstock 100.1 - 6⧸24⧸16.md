@@ -1,14 +1,21 @@
 ---
-title: "The Felice Brothers - Full Performance - Radio Woodstock 100.1 - 6/24/16"
-artist: "RadioWoodstock"
+title: The Felice Brothers - Full Performance - Radio Woodstock 100.1 - 6/24/16
+artist: RadioWoodstock
 type: music
 genre: ""
-source_url: "https://www.youtube.com/watch?v=3-mPTzZV_jg"
-channel: "RadioWoodstock"
+source_url: https://www.youtube.com/watch?v=3-mPTzZV_jg
+channel: RadioWoodstock
 upload_date: 2016-06-30
-duration: "26:40"
-tags: ["radio", "woodstock", "1001", "wdst", "local", "independent", "performance", "utopia"]
-file_path: "library/media/The Felice Brothers - Full Performance - Radio Woodstock 100.1 - 6⧸24⧸16.m4a"
+duration: 26:40
+tags:
+  - radio
+  - woodstock
+  - wdst
+  - local
+  - independent
+  - performance
+  - utopia
+file_path: library/media/The Felice Brothers - Full Performance - Radio Woodstock 100.1 - 6⧸24⧸16.m4a
 date_added: 2026-05-19
 ---
 

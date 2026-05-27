@@ -723,7 +723,7 @@ def open_note(query):
 
 # ── yt-dlp download commands ───────────────────────────────────────────────
 
-def build_cmd(url, mode, cookies):
+def build_cmd(url, mode, cookies, start=None):
     out_audio = str(MEDIA / "%(title)s.%(ext)s")
     out_album = str(MEDIA / "%(playlist_title)s" / "%(playlist_index)02d - %(title)s.%(ext)s")
     info_audio = str(LIBRARY / "%(title)s.%(ext)s")
@@ -768,12 +768,15 @@ def build_cmd(url, mode, cookies):
     if cookies:
         cmd += ["--cookies-from-browser", "chrome"]
 
+    if start:
+        cmd += ["--download-sections", f"*{start}-inf"]
+
     cmd.append(url)
     return cmd
 
 
-def download_and_catalog(url, mode, cookies, dry_run):
-    cmd = build_cmd(url, mode, cookies)
+def download_and_catalog(url, mode, cookies, dry_run, start=None):
+    cmd = build_cmd(url, mode, cookies, start=start)
 
     if dry_run:
         print(f"[dry-run] {' '.join(cmd)}")
@@ -846,6 +849,7 @@ def main():
     parser.add_argument("--force", action="store_true", help="Overwrite existing catalog notes (use with --recatalog)")
     parser.add_argument("--note", metavar="FILENAME", help="Open catalog note for a file in Obsidian")
     parser.add_argument("--delete", metavar="TITLE", help="Delete a track and its catalog note")
+    parser.add_argument("--start", metavar="TIME", help="Start download at this timestamp (e.g. 22:00)")
 
     args = parser.parse_args()
 
@@ -881,7 +885,7 @@ def main():
     cookies = args.cookies
 
     for url in args.urls:
-        download_and_catalog(url, mode=mode, cookies=cookies, dry_run=args.dry_run)
+        download_and_catalog(url, mode=mode, cookies=cookies, dry_run=args.dry_run, start=args.start)
 
 
 if __name__ == "__main__":
