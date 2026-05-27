@@ -1,10 +1,13 @@
 ---
 title: Music Library
 type: index
-date_updated: 2026-05-19
+date_updated: 2026-05-26
 ---
 
 ## Recently Added
+- [[The Felice Brothers - Frankie's Gun]] · [[SHOTOFSOULVIDEOS]] — 2026-05-26
+- [[smoove off ｜ Ep. 212]] · [[Will & Rusty's Playdate]] — 2026-05-26
+- [[Bob Dylan George Harrison - May 1 1970 - In The Studio (audio)]] · [[lo-fi noise makers]] — 2026-05-25
 - [[The Felice Brothers - Full Performance - Radio Woodstock 100.1 - 6⧸24⧸16]] · [[RadioWoodstock]] — 2026-05-19
 - [[Ghetto House, DnB, and Ghetto Tech in a Car ｜ HiTech ｜ carRADIO 065]] · [[heds]] — 2026-05-16
 - [[Who The Cap Fit (1976) - Bob Marley & The Wailers]] · [[Bob Marley]] — 2026-05-15
@@ -32,9 +35,6 @@ date_updated: 2026-05-19
 - [[Muddy Waters & The Rolling Stones - Baby Please Don't Go - Live At Checkerboard ]] · [[The Rolling Stones]] — 2026-05-15
 - [[Muddy Waters & The Rolling Stones - Baby Please Don't Go - Live At Checkerboard ]] · [[The Rolling Stones]] — 2026-05-15
 - [[Kanye - Father Stretch My Hands pt.1 but it's a Beautiful Morning]] · [[Hash]] — 2026-05-15
-- [[Kanye - Father Stretch My Hands pt.1 but it's a Beautiful Morning]] · [[Hash]] — 2026-05-15
-- [[Gunna - Who You Foolin (Alternative Intro + OG Tong Li Sample) (TRANSITIONED TO ]] · [[needlewon.]] — 2026-05-15
-- [[Gunna - Who You Foolin (Alternative Intro + OG Tong Li Sample) (TRANSITIONED TO ]] · [[needlewon.]] — 2026-05-15
 
 ## Artists
 - [[1216 Entertainment]] (1)
@@ -79,6 +79,7 @@ date_updated: 2026-05-19
 - [[Less Than Face Productions]] (8)
 - [[Let Your Soulshine]] (1)
 - [[Live Legends]] (1)
+- [[lo-fi noise makers]] (1)
 - [[Loukeman]] (25)
 - [[MAIN KID]] (1)
 - [[Marek Pocestný]] (1)
@@ -106,6 +107,7 @@ date_updated: 2026-05-19
 - [[Sentiments of souls]] (1)
 - [[Shadermader Reuploads]] (2)
 - [[Shiro]] (1)
+- [[SHOTOFSOULVIDEOS]] (1)
 - [[Sithani]] (1)
 - [[Smash Time Productions]] (1)
 - [[Sonic Youth]] (1)
